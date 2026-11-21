@@ -1,8 +1,17 @@
 r"""Atualiza references/ da skill a partir da fonte da verdade (<REFERENCIAS>).
 Uso: python -I sync_references.py [pasta_referencias]
 A fonte e editada pelo dono; a skill leva uma copia para funcionar fora daquela maquina/pasta."""
-import shutil, sys, pathlib
-SRC = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else r"<REFERENCIAS>")
+import os, shutil, sys, pathlib
+_here = pathlib.Path(__file__).resolve().parent
+# ordem: argumento > env PCB_REFERENCIAS > pasta local do dono > research/ do repositorio publico
+_cands = [sys.argv[1]] if len(sys.argv) > 1 else [
+    os.environ.get("PCB_REFERENCIAS", ""),
+    r"<REFERENCIAS>",
+    str(_here.parent.parent.parent / "research"),
+]
+SRC = next((pathlib.Path(c) for c in _cands if c and (pathlib.Path(c) / "boas-praticas").is_dir()), None)
+if SRC is None:
+    sys.exit("pasta de referencias nao encontrada: passe o caminho como argumento ou defina PCB_REFERENCIAS")
 DST = pathlib.Path(__file__).resolve().parent.parent / "references"
 m = {
     "PADROES-PROJETO-PCB.md": "regras-da-casa.md",
