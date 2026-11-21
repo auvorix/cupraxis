@@ -38,6 +38,8 @@ Os arquivos `01`–`10` são grandes (300–500 linhas). Não leia todos.
 | `kicad-cli`, `.kicad_dru`, `pcbnew`, Freerouting, plugins | `08` |
 | pedido JLC, BOM/CPL, KiCad-MCP, FreeCAD/StepUp, render | `09` |
 | outros fabricantes, formatos, UE/IVA, mínimo comum | `10` |
+| checklists de revisão: esquemático por classe de peça, tolerâncias, pinagens padrão, mux de GPIO, limiares de EMC/PDN, orçamento de bateria, EN 55032, edição por MCP | `13` |
+| via de retorno e pinos de GND em conector/cabo | `12` |
 | divergências com as regras da casa | `00` |
 
 ## Fluxo de trabalho com gates
@@ -48,7 +50,7 @@ Siga a ordem. Cada gate é uma parada para conferir antes de seguir. Pular etapa
 | 0 | Requisitos | função, interfaces externas, energia (host/USB/bateria), RF, carcaça/host, quantidade, **fabricante e serviço de montagem** (define mínimos, regras de borda, formato BOM/CPL) | lista de conectores de acesso + fonte de energia definida | regras-da-casa §5, §7 |
 | 1 | Arquitetura | stackup (2 ou 4 camadas), árvore de energia, módulos certificados × chip discreto, zonas | stackup e árvore de energia escritos | 02, 04 |
 | 2 | Componentes | peças Active com second source; footprint conferido no **desenho** do fabricante; código da biblioteca da montadora (ex.: LCSC na JLC) ou MPN para global sourcing/consignado | BOM com códigos antes do layout | 05, 10, regras §16 |
-| 3 | Esquemático | ERC 0; desacoplamento por pino; ESD em todo conector externo; pull-ups; jumpers 0 Ω de configuração | ERC 0 erros/0 avisos | 05 |
+| 3 | Esquemático | ERC 0; desacoplamento por pino; ESD em todo conector externo; pull-ups; jumpers 0 Ω de configuração; **revisão por classe de peça** (Vout pelo divisor de FB, EN não flutuante, Rds(on) na Vgs real, clamp do TVS ≤ máximo absoluto, Isat ≥ 1,3× pico, tensão do capacitor ≥ 1,5× a aplicada), tolerâncias empilhadas, mux de GPIO | ERC 0 erros/0 avisos + checklist `13` §A–D sem crítico | 05, 13 |
 | 4 | Contorno e mecânica | Edge.Cuts a partir de DXF/STEP oficial (host, padrão, carcaça); furos; zonas de altura | contorno conferido contra o arquivo oficial | 06 |
 | 5 | **Floorplan / placement** | zonas, conectores na borda, críticos colados aos chips, térmico, RF | revisão de placement (abaixo) **antes de qualquer trilha** | 01 |
 | 6 | Roteamento crítico à mão | RF 50 Ω, USB 90 Ω, cristal, hot loop do SMPS, energia larga | rotas críticas travadas | 03, 04, 02 |
@@ -90,11 +92,11 @@ Adapte ao produto:
 ### Proximidade por tipo de componente
 | Componente | Regra | Por quê |
 |---|---|---|
-| Desacoplamento (100 nF + bulk) | No pino de alimentação, via de GND junto ao pad do capacitor, laço mínimo; o menor valor mais perto | Indutância de montagem (trilha + via) domina acima de ~10 MHz |
+| Desacoplamento (100 nF + bulk) | No pino de alimentação, via de GND junto ao pad do capacitor, laço mínimo; o menor valor mais perto. Limiar de revisão: capacitor a ≤ 5 mm do pino (> 8 mm é erro) e ≤ 3 mm da via (heurística kicad-happy, `13` §E) | Indutância de montagem (trilha + via) domina acima de ~10 MHz |
 | Cristal + capacitores de carga | Perto do pino de clock, conforme datasheet (ex.: ESP32-C5 pede ≥ 2,4 mm; Microchip ≤ 12 mm); capacitores simétricos; GND sólido abaixo; nada de trilha passando sob ele | Laço de alta impedância capta e irradia; capacitância parasita desafina |
-| SMPS | Cin no VIN/PGND **sem via**; nó SW mínimo; indutor junto; FB pelo lado oposto, longe do SW; nada sob o indutor | Hot loop de di/dt alto é a maior fonte de EMI da placa |
+| SMPS | Cin no VIN/PGND **sem via**; nó SW mínimo e na camada externa; indutor junto; FB pelo lado oposto, longe do SW; nada sob o indutor. Limiares de revisão: cobre do nó SW e área do hot loop (medida pelos pads) ≤ 25 mm² (> 100 mm² é erro, TI SLVA477 via kicad-happy); indutor não blindado a ≥ 15 mm de ADC, cristal e RF | Hot loop de di/dt alto é a maior fonte de EMI da placa |
 | Rede de casamento RF | Colada no pino RF; saída única em CPWG até a antena/SMA; π extra de sintonia (0 Ω) perto da antena | Os valores mudam de placa para placa; precisa de ajuste com VNA |
-| TVS/ESD | No conector, antes de tudo, sem stub e sem via antes dele, GND curto | Cada 0,25 nH soma ~10 V no pino em 8 kV |
+| TVS/ESD | No conector, antes de tudo (≤ 15 mm centro a centro), sem stub e sem via antes dele; **≥ 2 vias de GND a ≤ 3 mm** do TVS | Cada 0,25 nH soma ~10 V no pino em 8 kV |
 | Ferrite de rail | No +V, do lado da fonte de ruído, com capacitor depois | Ferrite + C pode ressonar: ver Energia |
 | MLCC | ≥ 5 mm de borda, V-cut, furo de parafuso e conector com torque; eixo longo paralelo à borda | Trinca por flexão = curto intermitente |
 | Resistores série (SPI/SDIO/clock) | Junto ao **driver** (fonte) do sinal | Terminação série só funciona na origem |
@@ -138,18 +140,21 @@ Adapte ao produto:
 | Impedância controlada JLC | listada de 4 camadas para cima (±10 %); 2 camadas não consta (outros fabricantes variam: ver 10) | JLC capabilities |
 | CPWG 50 Ω em JLC04161H-7628 (L1 sobre 0,21 mm) | ≈ 0,30 mm de trilha / 0,30 mm de gap (estimativa; **confirmar na calculadora JLC**) | 03 |
 | USB 2.0 | 90 Ω ±15 %; descasamento ≤ 1,27 mm; 0 stubs; ≤ 4 vias; ESD ≤ 1–4 pF | 04, 05 |
-| Cerca de vias / costura | ≤ λ/20: ≈ 9,5 mm a 868 MHz, ≈ 3,4 mm a 2,45 GHz, ≈ 1,2–1,4 mm a 5,8 GHz | 03, 04 |
-| Via de retorno | via de GND a ≤ 5 mm (quanto mais perto, melhor) de cada troca de camada de sinal rápido | 04 |
+| Cerca de vias / costura | ≤ λ/20 calculado **no FR-4 (εr ≈ 4,4)**, porque a onda que as vias bloqueiam viaja dentro do dielétrico: **≈ 2,9 mm a 2,45 GHz, ≈ 1,2 mm a 5,8 GHz, ≈ 8,2 mm a 868 MHz**. Com εr_eff de microstrip (≈ 3,3) daria 3,4 / 1,4 / 9,5 mm, mas não use esses valores para cerca. λ/20 é prática comum, sem nota de fabricante; um estudo IEEE de 2023 achou ótimo perto de λ/18 | 03, 04, 12 |
+| Via de retorno (sinal que troca de plano de referência) | Sinal rápido (t_r ≤ 1,5 ns: USB, clock, SPI/SDIO/QSPI > 20 MHz, RF): via de GND a **≤ 1 mm** de centro a centro, o mais perto que o DRC permitir. **Limite de 5 mm** para qualquer sinal (TI SLLA414/SPRAAR7: 200 mil; Archambeault: ≤ 5× a distância entre planos). Par diferencial: 1–2 vias simétricas por par. Sinais lentos (≥ 3 ns): até ~4 sinais podem dividir uma via a ≤ 2 mm de todos. Troca GND↔PWR: via de GND não resolve; em sinal rápido re-rote, em sinal lento use capacitor de costura 10–100 nF 0402 a ≤ 2,5 mm. Mesma face do mesmo plano: não precisa de via | 12 |
 | Trilha de energia | IPC-2152 (calculadora Saturn); cobre interno JLC 4 camadas = 0,5 oz; ESP32 pede ≥ 0,76 mm na alimentação principal | 02 |
 | Vias térmicas no EP | furo ≤ 0,33 mm, sem alívio térmico, passo ~1 mm | 02 |
 | Ferrite | operar ≤ 20 % da corrente nominal (a 50 % a indutância cai até 90 %) | 02, 05 |
 | MLCC DC bias | 0402 X7R 1 µF/6,3 V perde ~40 % a 3 V → bulk em 0603/0805 ≥ 10 V; C0G em RF e cristal | 05 |
 | Antena de módulo | keepout em todas as camadas conforme o módulo; ≥ 15 mm até carcaça/metal (Espressif) | 03 |
+| Pinos de GND em conector/cabo | **Erro** abaixo de 1 GND para cada 9 sinais (mínimo absoluto, TI SZZA009). **Aviso** abaixo de max(2, ⌈S/4⌉) (TI: cabo > 30 cm pede 1:4; em velocidade mais alta, 1:5). Clock e sinais rápidos com GND colado ao lado (G-S-G); par diferencial em GSSG; a posição importa mais que a contagem. No header de 2,54 mm, um GND entre agressor e vítima derruba o crosstalk de 16 % para 1,8 % (Samtec). Cabo flat rápido ou > 30 cm: alternar 1:1. Conte também os pinos de GND pela corrente de retorno da alimentação | 12 |
 | Furos de montagem | M2 / M2.5 / M3 → furo 2,2 / 2,7 / 3,2 mm, anel 4,4 / 5,4 / 6,4 mm | 06 |
 
 ## Essenciais por domínio (detalhe nos references)
 **Energia (`02`):**
 - Buck-boost de 4 chaves tem **dois** hot loops.
+- PDN: impedância-alvo Z = ΔV/ΔI do degrau transitório. Em plano use a IPC-2152, não a IPC-2221. Filtro de entrada do SMPS com f_sw/f_corte ≥ 5.
+- Bateria: orçamento de corrente em sono (sinalize qualquer consumidor > 10 %) e V_bat_min = Vin_min + I_pico·R_interna + margem (`13` §G).
 - Ordem: Cin → indutor/SW → Cout/FB → sinais → GND.
 - Em modo economia (PFM) o filtro LC não filtra; preveja PWM forçado se houver GNSS ou analógico sensível.
 - Ferrite + C pode amplificar perto de f_SW; amorteça (ex.: 1 µF + 2 Ω) e confira a ressonância.
@@ -238,7 +243,7 @@ Scripts em `scripts/` (rodar com backup; os de `pcbnew` usam o `python.exe` do K
 | `sync_references.py` | Atualiza `references/` a partir de `<REFERENCIAS>` |
 
 ## Formatos de resposta
-**Revisão de layout/esquemático:** tabela `Severidade (Crítico/Alto/Médio/Baixo) | Problema | Consequência física | Correção concreta (com número)`, do mais grave ao menos grave. Inclua também o impacto de fabricação e custo de cada item quando houver. Por exemplo: peça no verso força montagem em dupla face; peça Extended tem taxa; placa pequena exige painel. Depois, o que está bom e o que falta informação para avaliar. Cite a regra e a fonte (arquivo de referência ou datasheet) nos itens críticos.
+**Revisão de layout/esquemático:** use os limiares de `13` §E (layout) e §A (esquemático) como critérios mensuráveis. Tabela `Severidade (Crítico/Alto/Médio/Baixo) | Problema | Consequência física | Correção concreta (com número)`, do mais grave ao menos grave. Inclua também o impacto de fabricação e custo de cada item quando houver. Por exemplo: peça no verso força montagem em dupla face; peça Extended tem taxa; placa pequena exige painel. Depois, o que está bom e o que falta informação para avaliar. Cite a regra e a fonte (arquivo de referência ou datasheet) nos itens críticos.
 
 **Plano de placa nova:**
 1. Requisitos e premissas.

@@ -5,6 +5,18 @@ Obs.: uma via por ilha e o minimo; em alta frequencia prefira varias vias ou rem
 import sys, json, math, re, io
 import pcbnew
 
+
+def safe_save(path, brd):
+    """SaveBoard preservando o .kicad_pro: o pcbnew regrava o projeto com o modelo em memoria (pode estar
+    desatualizado e apagar netclasses editadas fora dele - KiCAD-MCP KNOWN_ISSUES #5). Restaura se mudar."""
+    import os
+    pro = os.path.splitext(path)[0] + ".kicad_pro"
+    before = open(pro, "rb").read() if os.path.exists(pro) else None
+    pcbnew.SaveBoard(path, brd)
+    if before is not None and open(pro, "rb").read() != before:
+        open(pro, "wb").write(before)
+        print("aviso: SaveBoard alterou o .kicad_pro; versao original restaurada")
+
 BOARD, DRCJSON = sys.argv[1], sys.argv[2]
 DRY = len(sys.argv) > 3 and sys.argv[3] == "dry"
 mm = pcbnew.ToMM
@@ -151,4 +163,4 @@ for s_ in report: print(s_)
 io.open("island_pads.txt", "w", encoding="utf-8").write("\n".join("%s %s" % p for p in padlist))
 print("vias added:", added, " pads needing stubs:", len(padlist))
 if not DRY:
-    pcbnew.ZONE_FILLER(board).Fill(board.Zones()); pcbnew.SaveBoard(BOARD, board); print("saved")
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones()); safe_save(BOARD, board); print("saved")

@@ -26,6 +26,8 @@ m = {
     "boas-praticas/08-ferramentas-kicad.md": "08-ferramentas-kicad.md",
     "boas-praticas/09-ferramentas-fabrica-mcp-cad.md": "09-ferramentas-fabrica-mcp-cad.md",
     "boas-praticas/10-fabricantes-pcb-pcba.md": "10-fabricantes-pcb-pcba.md",
+    "boas-praticas/12-via-retorno-e-pinos-gnd.md": "12-via-retorno-e-pinos-gnd.md",
+    "boas-praticas/13-checklists-revisao.md": "13-checklists-revisao.md",
 }
 for s, d in m.items():
     p = SRC / s

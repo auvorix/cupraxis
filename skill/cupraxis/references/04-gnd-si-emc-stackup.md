@@ -239,7 +239,7 @@ Núcleo NP-155F com εr 4,6. Máscara de solda com εr 3,8. (FATO, mesma página
 **D4. Filtros nos conectores:**
 - Todo sinal que sai da placa passa por filtro ou proteção **junto ao conector**: ferrite ou choke de modo comum e TVS. Trilhas protegidas e não protegidas não correm juntas. (FATO, SPRAAR7 §3.14: "*Keep any unprotected traces away from protected traces*")
 - Em USB, choke de modo comum (CMF) opcional com footprint de 0 Ω 0402 (componentes maiores perdem mais do que o próprio CMF). O conjunto ESD+CMF fica curto e colado ao conector. Void de 60% sob os pads do ESD/EMI em linhas rápidas. (FATO, SPRAAR7 §3.14)
-- Em cabos e chicotes: pelo menos um retorno de GND para cada 9 sinais ("prática comum na indústria de computadores"). (FATO, TI SZZA009 §2.5.3)
+- Em cabos e chicotes (TI SZZA009 §2.5.3, FATO; leitura completa em `12`): 1 retorno de GND para cada 9 sinais é o **mínimo absoluto** ("never run less than..."); cabo com mais de ~30 cm pede **1:4**; em velocidade mais alta, **1:5**; o ideal é **1:1** em par trançado. (Corrigido em 2026-11-21: a versão anterior tratava 1:9 como a regra.)
 
 **D5. ESD/TVS no ponto de entrada (TI SLVA680, https://www.ti.com/lit/an/slva680/slva680.pdf, FATO):**
 - V_ESD = V_br + R_dyn·I + (L2+L3)·di/dt. Em 8 kV (IEC 61000-4-2), di/dt = 30 A/0,8 ns = 4×10¹⁰ A/s, então **0,25 nH já somam cerca de 10 V**.

@@ -24,3 +24,18 @@ w.writerow(["Designator", "Mid X", "Mid Y", "Layer", "Rotation"])
 for r in p:
     w.writerow([r["Ref"], f'{float(r["PosX"]):.6f}mm', f'{float(r["PosY"]):.6f}mm', "Top" if r["Side"] == "top" else "Bottom", f'{float(r["Rot"]):.6f}'])
 print("bom lines", len(g), "missing lcsc", sum(1 for v in g.values() if not v[3]), "cpl", len(p))
+# cruzamento BOM x CPL: todo designator do BOM precisa de posicao; orfaos do CPL indicam BOM/placa divergentes
+bom_refs = {d for _, ds, _, _ in g.values() for d in ds if d}
+cpl_refs = {r["Ref"] for r in p}
+sem_pos = sorted(bom_refs - cpl_refs, key=nat)
+orfaos = sorted(cpl_refs - bom_refs, key=nat)
+esperados = [r for r in orfaos if re.match(r"(H|FID|TP|MH|LOGO|REF)\d*", r)]
+if orfaos:
+    print("CPL sem linha no BOM:", ", ".join(orfaos), "(esperados: furos/fiduciais/test points ->", ", ".join(esperados) or "nenhum", ")")
+if sem_pos:
+    print("ERRO: designators do BOM sem posicao no CPL:", ", ".join(sem_pos))
+    sys.exit(1)
+dup = [d for d, n in collections.Counter(d for _, ds, _, _ in g.values() for d in ds if d).items() if n > 1]
+if dup:
+    print("ERRO: designator repetido no BOM:", ", ".join(sorted(dup, key=nat)))
+    sys.exit(1)

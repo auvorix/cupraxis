@@ -197,6 +197,28 @@ Baixados em 2026-11-20. Uso interno como referência; sem redistribuição, salv
 Tentados e descartados: TDK FlexCrack Countermeasures (o link do Mouser devolveu HTML e foi apagado); mikroBUS standard v2.00 (download.mikroe.com devolveu XML de erro e foi apagado); Sierra Circuits DFM Handbook (atrás de formulário, não baixado).
 
 
+## 12-via-gnd
+
+# Licenças e origem dos PDFs desta pasta (tema 12: via de retorno e pinos de GND)
+
+Baixados em 2026-11-21 para uso interno de referência técnica, sem redistribuição. Todos estavam em acesso público e gratuito na URL indicada. Os direitos autorais continuam com os titulares.
+
+| Arquivo | Titular / licença | Origem |
+|---|---|---|
+| `IEEE-EMCS-Archambeault-designtip-fall07.pdf` | © 2007 IEEE (EMC Society Newsletter, "Design Tips", B. Archambeault). PDF hospedado publicamente pela IEEE EMCS | https://ewh.ieee.org/soc/emcs/acstrial/newsletters/fall07/pg102-103.pdf |
+| `nsf-par-10465871.pdf` | X. Fang, C. Hwang et al., IEEE EMC+SIPI 2023. O manuscrito diz "U.S. Government work not protected by U.S. copyright"; é distribuído pelo repositório de acesso público da NSF (NSF-PAR) | https://par.nsf.gov/servlets/purl/10465871 |
+| `Samtec-hsc-report_tsm-01_ssw-22_web.pdf` | © Samtec, Inc. Relatório público de caracterização (header 2,54 mm TSM/SSW) | https://suddendocs.samtec.com/testreports/hsc-report_tsm-01_ssw-22_web.pdf |
+| `Samtec-time-data-summary_tsm-01_ssw-22_web.pdf` | © Samtec, Inc. Resumo no domínio do tempo do mesmo relatório | https://suddendocs.samtec.com/testreports/time-data-summary_tsm-01_ssw-22_web.pdf |
+| `Samtec-characterization-details_dpam-dpaf-10mm_web.pdf` | © Samtec, Inc. Definições de razão S:G (SE1:1, SE2:1) | https://suddendocs.samtec.com/testreports/characterization-details_dpam-dpaf-10mm_web.pdf |
+
+## Usados no estudo, mas não copiados para esta pasta
+
+- **TI SZZA009, SLLA414A, SPRAAR7J e SCAA082A; Toradex Layout Design Guide; NXP AN10897.** Já estão em `../04-emc/`, com licença registrada em `../04-emc/LICENSES.md`. Não foram duplicados.
+- **Steve Weir (IPBLOX), "How Bad is Bad? Cavity Signal Injection and Mitigation", IEEE SCV EMC, 2012.** O texto foi lido em https://ewh.ieee.org/r6/scv/emc/archive/022012SteveWeir.pdf. A cópia local foi **apagada** porque o slide 2 diz "not to be reproduced in any form without permission of IPBLOX, LLC". Só é citada pela URL.
+- **kicad-happy** (aklofas/kicad-happy, commit `6b9767e`). O código foi lido num clone temporário, que não foi guardado aqui: https://github.com/aklofas/kicad-happy
+- **Daniel Beeker (NXP), AMF-AUT-T3395, 2018.** Lido e não guardado (139 páginas, sem dado sobre razão S:G): https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/tech-days/358/1/AMF-AUT-T3395.pdf
+
+
 ## rf-reference-designs
 
 | Documento | Onde obter |

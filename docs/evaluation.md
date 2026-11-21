@@ -29,6 +29,7 @@ Model used for all runs: Claude Opus 5.5 (2026-11-21).
 | 1 | first draft | 47 | **100 %** | 96 % | +4 pp |
 | 2 | harder, accuracy-focused assertions; HAT host template; reading map; tested `kicad-cli` traps | 64 | **98 %** | 81 % | +17 pp |
 | 3 | unseen motor case; rule to label unsourced numbers | 25 | **96 %** | 84–87 % | +10 pp |
+| 4 (regression, v1.1.0) | review checklists (`13`), return-via/GND-pin research (`12`), λ/20 in FR-4 | 25 (with skill only) | **100 %** | — | no regressions vs iteration 3 |
 
 Cost: the skill roughly doubles tokens and time, because it reads references and often checks datasheets. In iteration 1 it used about 172k tokens against 82k, and 562 s against 240 s. A selective-reading map added in iteration 2 cut the layout review from 134k to 106k tokens and from 213 s to 119 s.
 

@@ -28,6 +28,7 @@ KiCad 10 · kicad-cli · Freerouting · KiCad-MCP · JLCPCB · PCBWay · Aisler 
 - **Component selection:** MLCC DC-bias derating, inductors (Isat vs Irms), crystals, connectors, lifecycle and MSL.
 - **Board shape and DFM:** outlines from official DXF/STEP, mounting holes, panelization, silkscreen minimums, enclosure co-design.
 - **Vendor-agnostic manufacturing:** a common-minimum rule set, per-vendor BOM/CPL formats, DRU files, and EU import rules (VAT, IOSS, the 2026 per-line duty).
+- **Review checklists:** schematic review by part class, measurable EMC/PDN layout thresholds, return-via and connector ground-pin rules backed by primary sources, battery sleep budget, and EN 55032 pre-compliance.
 - **Toolchain know-how, tested on KiCad 10.0.8:** `kicad-cli` recipes and their traps, `.kicad_dru` rules, the `pcbnew` API, Freerouting, and the KiCad-MCP limitations.
 - **Scripts:** a read-only board audit for edge connectors, the 2.5 mm assembly rule, MLCC flex risk, silk minimums and thin power traces. Also included: rip-up, spread, GND stitching fixes, a JLC/LCSC parts query, and a BOM/CPL converter.
 
@@ -62,12 +63,13 @@ python jlc_query.py "mfr_part like 'TPS63020%'"               # parts lookup
 ```
 skill/cupraxis/           ← the installable skill
   SKILL.md                  workflow with gates, zoning map, proximity table, key numbers
-  references/               00–10 topic files + house rules + host templates (RPi HAT, Flipper)
+  references/               00–13 topic files + house rules + host templates (RPi HAT, Flipper)
   scripts/                  pcb_audit, ripup, spread, gnd_fix, island_fix, jlc_query, kicad_to_jlc
   evals/                    test cases (claude plugin eval format)
 research/                   the full research corpus in Markdown (source of the references)
   boas-praticas/            01 floorplan · 02 power · 03 RF · 04 GND/SI/EMC · 05 components
                             06 shape/DFM · 07 bibliography · 08 KiCad · 09 fab/MCP/CAD · 10 vendors
+                            11 related skills · 12 return vias & GND pins · 13 review checklists
   hosts/                    host templates (tagged [FLIPPER] where Flipper-specific)
 docs/
   pdf-catalog.md            every vendor PDF used, with its official download link
