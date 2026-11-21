@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: multi-vendor-eu-order
+expected_outcome: |
+  Comparação fundamentada de 4 fabricantes para o caso, projeto agnóstico (mínimo comum, DRU por fabricante), formatos de BOM/CPL distintos, questões UE (IVA/IOSS/alfândega), impedância e acabamento para QFN 0,4 mm.

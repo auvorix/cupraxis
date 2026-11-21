@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: layout-review-seeded-errors
+expected_outcome: |
+  Revisão ordenada por gravidade que identifica os 8 problemas plantados com consequência física e correção numérica.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: iot-sensor-floorplan
+expected_outcome: |
+  Plano completo: zonas com antena na borda e keepout, stackup justificado com impedância, energia LiPo->3V3 bem raciocinada, cristal/desacoplamento, ESD/CC no USB-C, sensor afastado do calor, restrições de montagem JLC.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: motor-driver-power-board
+expected_outcome: |
+  Plano de layout de potência: cobre/larguras por corrente (IPC-2152), térmico do PowerPAD, bulk e hot loop no VM, separação de retorno de potência e lógica, Kelvin no shunt, proteção da entrada 3S, buck para 3V3, antena do módulo longe da potência, conectores dimensionados na borda.

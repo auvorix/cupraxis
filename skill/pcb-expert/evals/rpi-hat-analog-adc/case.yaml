@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: rpi-hat-analog-adc
+expected_outcome: |
+  Contorno e furos no padrão HAT oficial, EEPROM de ID, borne na borda, divisor/proteção de entrada 0-10V, GND único com analógico afastado do digital/5V, desacoplamento e referência do ADC.

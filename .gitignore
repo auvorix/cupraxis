@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+# KiCad scratch / backups
+*.kicad_pcb.bak*
+*-backups/
+fp-info-cache
+*.kicad_prl
+# Vendor PDFs are not redistributed (see docs/pdf-catalog.md)
+*.pdf
+# eval workspaces / results
+*-workspace/
+evals/results/
+# OS
+.DS_Store
+Thumbs.db

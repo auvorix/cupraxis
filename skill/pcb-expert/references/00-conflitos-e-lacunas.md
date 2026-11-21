@@ -1,0 +1,51 @@
+# Conflitos com o PADROES, lacunas e pendências — consolidado (2026-11-20)
+
+> Síntese das seções "Conflitos com PADROES-PROJETO-PCB.md" e "Lacunas" dos temas 01–06. **O `PADROES-PROJETO-PCB.md` NÃO foi alterado** — cada item abaixo é uma decisão do dono. Detalhe, números e fontes no tema indicado entre colchetes.
+
+## A. Divergências que pedem decisão (prioridade alta)
+
+| # | Regra da casa | O que a literatura diz | Sugestão | Tema |
+|---|---|---|---|---|
+| A1 | §5/§13 nº1–4: USB-C, microSD, SMA **rentes à borda** | JLCPCB Assembly T&C §2 item 3 (conferido em 2026-11-20, pág. atualizada 09/09/2026): "distance between the body of the components and the edge of the board must be equal or greater than 2.5mm". Sem exceção para conector. Item 5: rails, fiduciais e furos de ferramenta são exigidos; item 14: placa < 70×70 mm ou sem rail → a JLC escolhe o método (ex.: mouse bites) | Projetar com **rails/painel** (a borda que a máquina vê é a do rail) e **perguntar à JLC** antes do pedido como trata conector que ultrapassa a borda | 01, 06 |
+| A2 | Placas pequenas (< 70 mm em algum lado, ex. `[FLIPPER]`: módulo externo do Flipper Zero, 67,34 mm) em PCBA Standard | Standard exige ≥ 70×70 mm (ou rails/painel); Economic monta só 1 lado e só ≥ 0402 | Painel/rails, ou Economic com peças num lado só | 01, 05 |
+| A3 | §4: ~18 mm entre centros dos SMA | Em 2,45 GHz, λ/2π ≈ 19,5 mm → mesma banda fica em campo próximo; isolação de antenas em placa pequena é 15–20 dB, Wi-Fi +20 dBm pede 45–50 dB (Silicon Labs) | 18 mm só entre bandas diferentes; mesma banda: máximo afastamento + coexistência por firmware (tempo/canal/potência) | 03 |
+| A4 | §3 diz "microstrip", §14 diz "CPWG" | Contradição interna. JLC lista impedância controlada a partir de 4 camadas (±10 %); 2 camadas CPWG é aceita por Espressif/Nordic mas sem controle da fábrica | Unificar em **CPWG sobre L2** (4 camadas). Estimativa JLC04161H-7628: ≈ 0,30 mm trilha / 0,30 mm gap — **confirmar na calculadora JLC** | 03, 04 |
+| A5 | §7: ferrite + LC por rádio | Ferrite + C pode **ressonar e amplificar** (+10 dB perto de 2,5 MHz no exemplo ADI — TPS63020 chaveia a 2,4 MHz); ferrite perde até 90 % de L a 50 % da corrente nominal | Manter a regra, acrescentar: ferrite ≤ 20 % da corrente nominal, amortecimento (1 µF + 2 Ω), conferir f de ressonância, jumper p/ PWM forçado; GNSS MAX-M10S tolera ≤ 0,2 Ω série no VCC. **Alternativa a decidir:** buck-boost um pouco acima de 3,3 V + LDO só nos rails GNSS/sub-GHz (margem apertada contra o limite de 3,6 V do ESP32). Obs.: em modo economia (PFM) o LC não filtra — LDO filtra melhor (TI SNVA871) | 02, 05 |
+| A5b | §14: netclass de energia 0,5–0,8 mm | Cobre interno JLC é **0,5 oz** por padrão; Espressif pede trilha principal de energia ≥ 0,76 mm; 0,5 mm fica abaixo do critério Rohm p/ pico de 2× ESP32; fontes divergem (0,38 mm/A TI × 1 mm/A em 1 oz Rohm; 1 via/200 mA × 1 via/A) | Mínimo 0,76 mm no +3V3 principal; dimensionar pela IPC-2152 (calculadora Saturn) considerando 0,5 oz nas internas | 02 |
+| A6 | §15: Freerouting na placa inteira | TI: sinais rápidos "laid out early (preferably first)" | USB, RF 50 Ω e cristal **à mão e travados** antes do autorouter | 04 |
+| A7 | §15 passo 6: `island_fix.py` põe **uma** via por ilha | Ott: costurar "at as many locations as possible" | Várias vias por ilha / remover ilhas pequenas | 04 |
+| A8 | §15: `spread.py` GAP 0,6 mm; critério "courtyard = 0" | Tabela de espaçamento JLC por par de encapsulamento: QFN 1,0 mm, QFP–QFP 1,25 mm, BGA 2,0 mm | Checar placement contra a tabela JLC, não só courtyard | 01 |
+| A9 | §6: hub USB "elimina os test pads" | DFT: ao menos um ponto sondável por net crítica; Tag-Connect TC2030-NL é prática profissional | Eliminar header de flash, **manter** test pads mínimos | 01, 05 |
+| A10 | §6: auto-boot com 2 MOSFETs | ESP32-C5 tem USB-Serial/JTAG nativo (GPIO13/14) que entra em download sozinho | MOSFETs só atrás de ponte USB-UART ou flash pelo UART de um host; manter botão BOOT | 05 |
+| A11 | §1: stackup fixo 7628; camada 3 indefinida | Ott prefere sinal ≤ 0,25 mm do plano (3313 = 0,099 mm, 7628 = 0,21 mm); 7628 dá trilha 50 Ω mais larga (melhor p/ 0402/SMA) | Decidir 7628 × 3313 e SIG/GND/GND/SIG × SIG/GND/PWR/SIG | 04 |
+| A12 | §2 "cristal colado ao pino" | Espressif (ESP32-C5 chip-down): ≥ 2,4 mm do pino; Microchip: ≤ 12 mm | "Perto, conforme datasheet do chip" | 01 |
+| A13 | §2 "regulador perto da carga" × §14 "energia no quadrante do USB-C" | — | Desempate: §14 p/ o buck-boost; §2 p/ LDO/filtros locais | 02 |
+| A14 | §15 e erro nº 20: "o DSN não leva zonas" | Teste no KiCad 10.0.8 (tema 08): o DSN leva zonas (como `plane`), keepouts e netclasses; **não** leva regras `.kicad_dru`, gap de par diferencial nem isolação furo-cobre. Freerouting devolveu trilhas abaixo da netclass | Atualizar a justificativa: o risco real é regra `.kicad_dru` e largura fora da netclass → sempre DRC + conferência de larguras após `import_ses` | 08 |
+
+## B. Regras confirmadas pela literatura
+Placement antes de rotear (§12); 4 camadas para RF/energia (§1, com a ressalva TI de que 2 camadas bem feitas chegam perto); energia agrupada no quadrante do USB-C e SMPS longe do RF (§14 — "canto inferior" é heurística da casa, não norma); calor espalhado (§2); desacoplamento colado + GND sólido sob cristal (conferir datasheet: a Arrow diverge); buck-boost para LiPo 1S (§7); 2× 5,1 kΩ no CC (§14, só fontes secundárias); shield can, bias tee GPS, cercas de via, u.FL virado para a saída (§3/§14); geometria de encaixe pelo arquivo oficial (§9); SMA edge-mount exige placa de 1,6 mm; carga do cristal CL ≈ C/2 + 2–5 pF (§16).
+
+## C. O que falta no PADROES (candidatos a regra nova)
+- **Mecânica/DFM:** MLCC a ≥ 5 mm de borda, furo de parafuso e V-cut, orientação **contestada** (Murata/Vishay: eixo paralelo à borda; guia Altium: 90°) (distância: Vishay/Knowles 5 mm; Murata até 10 mm); raio de canto externo e interno (JLC não publica raio interno; ≥ 1,0 mm é inferência); fiduciais (3 globais 1 mm/máscara 2 mm/≥ 3,35 mm da borda; locais em passo ≤ 0,5 mm); furos de ferramenta 1,152 mm; mínimos de silk (0,15 mm traço, 1,0 mm altura, 0,15 mm do pad); cobre ≥ 0,2 mm da borda fresada / ≥ 0,4 mm do V-cut; ENIG p/ passo ≤ 0,5 mm; ponte de máscara 0,13 mm em preto/branco; furo M2.5 NPTH × anel em GND e keepout de cabeça (~Ø 5,9 mm).
+- **Elétrica:** DC bias de MLCC (0402 X7R 1 µF/6,3 V perde 40 % a 3 V → bulk 0603/0805 ≥ 10 V); proibir tântalo MnO₂ em VBUS/VBAT; Isat × Irms em indutores; ESD em USB ≤ 1–4 pF, TVS colado ao conector sem stub/via; vias térmicas no EP (furo ≤ 0,33 mm, sem alívio); θJA do datasheet não vale para a sua placa; proteção contra bateria invertida, NTC, polaridade JST PH; BQ2407x é **linear** (dissipa).
+- **SI/EMC:** USB 90 Ω ±15 %, descasamento ≤ 1,27 mm, 0 stubs, ≤ 4 vias; via de GND ao lado de toda via de sinal rápida (≤ 5 mm); cercas de via ≤ λ/20 (≈ 3,4 mm @ 2,45 GHz, ≈ 1,2–1,4 mm @ 5,8 GHz, ≈ 9,5 mm @ 868 MHz); microSD: série 0–22 Ω no CLK; 20H e 3W são **contestadas** (não usar como dogma).
+- **RF/conformidade:** rede π de sintonia com 0 Ω + ajuste por VNA (valores não passam de uma placa para outra); componentes de RF 0402/0201; keepout de antena por módulo (varia!) e ≥ 15 mm até a carcaça (Espressif); alterar o layout de RF de um módulo pode invalidar o reaproveitamento da avaliação RED (ETSI EG 203 367).
+- **Sourcing:** só peças Active com second source; MSL/bake (MSL3 = 168 h); "Preferred Extended" isentas de taxa na JLC Economic.
+
+## D. Pendências que dependem do dono
+1. **PDFs bloqueados para download automático.** Em 2026-11-21 o dono baixou 16 manualmente (já movidos para as pastas e registrados nos `LICENSES.md`): ADI AN-136, AN-139, AN-1368, MT-031, MT-101, Ferrite Beads Demystified; Würth ANP045b, ANP044d; ST AN1709, AN2867; NXP AN10897, AN2731; Silicon Labs AN0016.1, AN1088, AN928.2; Molex PicoBlade. **Ainda faltam** (link direto não confirmado): Würth ANP041, ANP025, ANR017 e nota de modo comum/diferencial; Microchip AN26.2; Nordic nWP-017, nWP-008; guias Ignion; KEMET flex crack/tântalo. Obs.: os temas ainda citam esses documentos com a etiqueta da época (SEC/FATO-sec); dá para promover a FATO numa revisão lendo os PDFs.
+2. **Rodar a calculadora de impedância da JLC** para 7628 e 3313 (50 Ω CPWG, 90 Ω diferencial) — as larguras nos temas 03/04 são estimativas.
+3. **Perguntar à JLC**: conector que ultrapassa a borda + regra de 2,5 mm em placa com rail.
+4. **Preço 2 × 4 camadas**: JLC reajustou em 03/08/2026 sem publicar valores — conferir na cotação.
+5. `pdfs/05-componentes/` contém o desenho GCT USB4105 marcado **"confidential"**: só uso interno, não redistribuir (nem colocar em repositório público).
+
+6. PDFs duplicados entre pastas de tema (Espressif ESP32-C5 ×3, Vishay 49088 ×3, TI SNVA021/SZZA009/SLVA680 ×2) — deduplicar depois, ajustando os `LICENSES.md`.
+
+## E. Lacunas de pesquisa (não encontradas com fonte primária)
+Grade/densidade-alvo de placement; limiar para 2 lados/HDI; valores IPC-7351 A/B/C (só secundário; usar KLC F5.3); regra λ/20 sem nota de fabricante (prática comum); FPC/ZIF, pogo pins, M.2, Micro-Fit, terminais de parafuso; thin × thick film; folga LED–light pipe; exemplos de "board art" (Flipper, Teenage Engineering, badges); validação do `.kicad_dru` JLC e do pcb2blender no KiCad 10; status atual das EN 301 893 / 303 413 / 301 489 na lista harmonizada; palestras Hartley e artigos Armstrong não lidos em primeira mão; anos/edições de livros citados de memória.
+
+## F. Observações sobre os arquivos já existentes em `referencias/`
+- `scripts-roteamento/spread.py` é descrito no §15 como genérico, mas tem valores **fixos de um projeto específico (AirScope)**: refs fixas `U1, U6–U9`, faixa de RF `y < 20.0`, limites `XMIN..YMAX = 12/146/20/76` e raios por nome de footprint. Precisa parametrizar antes de virar ferramenta da skill.
+- `scripts-roteamento/island_fix.py` tem a docstring copiada do `gnd_fix.py` (descreve outra coisa).
+- `scripts-bom/jlc_query.py` aponta para caminho absoluto do banco (`%USERPROFILE%\.kicad-mcp\data\jlcpcb_parts.db`) — ok para uso local, parametrizar para a skill.
+- `rf-reference-designs/` não tem `LICENSES.md` (documentos TI/u-blox/Nordic) — falta registrar origem/termos.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: kicad-cli-fab-automation
+expected_outcome: |
+  Script PowerShell com sintaxe kicad-cli real do KiCad 10, checagem de exit code/JSON, formatos JLC corretos de BOM/CPL, alerta de rotação, e .kicad_dru válido com mínimos JLC corretos.
