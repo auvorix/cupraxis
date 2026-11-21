@@ -381,3 +381,30 @@ Todas consultadas em **2026-11-21**.
 - PCM oficial (lista de pacotes): https://gitlab.com/kicad/addons/metadata/-/tree/main/packages
 - DRU: https://github.com/labtroll/KiCad-DesignRules · https://github.com/Cimos/kicad-druid
 - kicad-cli (ODB++ 9.0+, IPC-2581 8.0+): https://docs.kicad.org/9.0/en/cli/cli.html · https://docs.kicad.org/8.0/en/cli/cli.html · https://docs.kicad.org/10.0/en/cli/cli.html
+
+## Cotação real JLCPCB (conta do dono, 2026-11-21, FATO; 5 placas 100×100 mm, FR-4 1,6 mm, verde, HASL, 1 oz, envio para a Irlanda)
+| Config | Preço PCB | Produção | Frete |
+|---|---|---|---|
+| 2 camadas | **€3,64** (oferta) | 24 h (padrão do formulário) / 2 dias | UPS Express Saver **DDP €23,67**, 2–4 dias úteis, 0,29 kg |
+| 4 camadas | **€7,29** (oferta; app desktop "a partir de €5,46") | 3–4 dias; 2–3 dias por **+€60,29** | idem |
+- Armadilha vista: ao voltar de 4 para 2 camadas o formulário manteve "Via Covering" com custo de **€15,14** (opção de via tampada herdada). Confira o detalhamento antes de salvar no carrinho.
+- Opções cotadas na mesma base (5 placas de 100×100 mm, 2026-11-21, FATO):
+
+| Opção | 2 camadas | 4 camadas |
+|---|---|---|
+| Base (HASL com chumbo, verde, 1 oz) | €3,64 · 2 dias (24 h por +€6,92) · app desktop €1,82 | €7,29 · 3–4 dias (2–3 dias por +€60,29) · app desktop a partir de €5,46 |
+| HASL sem chumbo | +€1,18 (total €4,83) | não cotado |
+| **ENIG** (1 µ" de ouro) | +€16,12 (total €19,76) · prazo vai a 3 dias | +€16,12 (total €23,40) |
+| Máscara **preta** | sem custo extra · prazo vai a 3 dias | não cotado |
+| Cobre externo **2 oz** | +€33,15 (total €36,79) · 3 dias | não cotado |
+| **Specify Stackup** = JLC04161H-3313 (impedância) | — | **sem custo extra** (total igual, €23,40 com ENIG) |
+| Frete UPS Express Saver DDP para a Irlanda | €23,67 · 2–4 dias úteis · 0,29 kg | igual |
+
+- **Achado importante:** ao escolher o stackup **JLC04161H-3313**, o site avisa *"This is a special stackup, and it doesn't support economic PCB assembly"*. Ou seja, 3313 obriga o **PCBA Standard**. O 7628 padrão não tem esse aviso.
+- **Via covering:** em 4 camadas o padrão do formulário é "Plugged", e "Tented" fica desabilitado. Ao voltar para 2 camadas a escolha pode ficar herdada e custar +€15,14; confira o detalhamento.
+- **Conclusões para orçamento de protótipo** (INFERÊNCIA a partir desses números):
+  - Ir de 2 para 4 camadas custa ~€3,65 por lote de 5.
+  - ENIG custa ~€16 por lote.
+  - 2 oz custa ~€33 por lote.
+  - O frete (~€24) costuma pesar mais que a placa.
+  - Para RF e QFN de passo fino, 4 camadas + ENIG sai a ~€23 + frete.

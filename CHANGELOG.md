@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1 — 2026-11-21
+- **Real JLCPCB quote** (5 pcs, 100×100 mm, shipped to Ireland) in `references/10`:
+  - 2 layers €3.64 and 4 layers €7.29;
+  - ENIG +€16.12; 2 oz copper +€33.15; black mask at no extra cost;
+  - specifying a stackup costs nothing extra;
+  - DDP shipping €23.67.
+- **New finding:** the JLC04161H-3313 stackup is "special" and does not support Economic PCBA, only Standard. This is recorded in the skill and in the house rules.
+
+
 ## 1.2.0 — 2026-11-21
 - **Official JLCPCB impedance values** from the vendor calculator replace the estimates. Setup: 4 layers, 1.6 mm, 1 oz outer / 0.5 oz inner, signal on L1 over L2.
   - JLC04161H-7628: CPWG 50 Ω W 0.306 mm with a 0.20 mm gap; microstrip 50 Ω 0.359 mm; 90 Ω differential pair W 0.291 / S 0.203 mm.

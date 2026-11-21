@@ -133,6 +133,7 @@ Adapte ao produto:
 |---|---|---|
 | JLC montagem: corpo ↔ borda | ≥ 2,5 mm (sem exceção escrita para conector) → rails/painel; perguntar à JLC sobre conector que ultrapassa a borda | JLC Assembly T&C §2.3 (conferido 2026-11-20) |
 | JLC PCBA Standard | placa ≥ 70×70 mm, ou rails/painel; Economic: 1 lado, peças ≥ 0402 | 01 |
+| Custo JLC (cotação real 2026-11-21, 5× 100×100 mm, Irlanda) | 2 camadas €3,64; 4 camadas €7,29; ENIG +€16; 2 oz +€33 (2 camadas); máscara preta sem custo; especificar stackup sem custo, mas o **3313 não aceita PCBA Economic**; frete DDP ~€24. Preços mudam: refaça a cotação | 10 |
 | Rails / fiduciais | rail 5 mm; 3 fiduciais globais (pad 1 mm, máscara 2 mm, ≥ 3,35 mm da borda); fiducial local em passo ≤ 0,5 mm | 01 |
 | Cobre ↔ borda | ≥ 0,2 mm fresada; ≥ 0,4 mm V-cut | JLC capabilities |
 | JLC 2 camadas, mínimos absolutos (consulta 2026-11) | trilha/espaço 0,10/0,10 mm; via 0,15/0,25 mm (furo/pad); anel PTH 0,18 mm (0,25 recomendado). Diferencie **mínimo** de **recomendado**: projete com folga (ex.: 0,15–0,2 mm, via 0,3/0,6) e use o mínimo só onde precisa | JLC capabilities, 06 |
