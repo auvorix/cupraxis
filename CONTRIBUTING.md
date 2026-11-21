@@ -9,11 +9,11 @@ Contributions are welcome: corrections, new sources, new vendors, new host templ
 2. **Never invent numbers.** If you could not find it, write "não encontrado" / "not found".
 3. **Vendor data changes.** Put the consultation date next to capabilities, prices and tax rules.
 4. **Do not commit third-party PDFs.** Add the document and its official link to `docs/pdf-catalog.md` instead.
-5. Host-specific content (a board that plugs into a particular device) goes to `skill/pcb-expert/references/hosts/` and must be tagged, e.g. `[FLIPPER]`.
+5. Host-specific content (a board that plugs into a particular device) goes to `skill/cupraxis/references/hosts/` and must be tagged, e.g. `[FLIPPER]`.
 
 ## Changing the skill
 - Keep `SKILL.md` under ~500 lines; push detail into `references/`.
-- Add or update a test case in `skill/pcb-expert/evals/<case>/` (prompt, `case.yaml`, one grader per assertion).
+- Add or update a test case in `skill/cupraxis/evals/<case>/` (prompt, `case.yaml`, one grader per assertion).
 - Run the evals with and without the skill before and after the change (`claude plugin eval .` from the skill folder, or the skill-creator loop) and report the pass rates in the PR.
 
 ## Scripts

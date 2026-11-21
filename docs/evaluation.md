@@ -1,4 +1,4 @@
-# Evaluation: `pcb-expert` with the skill vs without it
+# Evaluation: `cupraxis` with the skill vs without it
 
 Method: Anthropic's skill-creator loop.
 
@@ -7,7 +7,7 @@ Method: Anthropic's skill-creator loop.
   - **without_skill** used general knowledge and web search, and was forbidden to read the skill or the research folder.
 - An independent grader then checked each assertion against the written answer and quoted the evidence.
 - Assertions about `.kicad_dru` files were also checked programmatically. The generated rules were run with `kicad-cli pcb drc` on a scratch copy of a KiCad demo board.
-- Test cases live in [`skill/pcb-expert/evals/`](../skill/pcb-expert/evals/), in `claude plugin eval` format.
+- Test cases live in [`skill/cupraxis/evals/`](../skill/cupraxis/evals/), in `claude plugin eval` format.
 
 Model used for all runs: Claude Opus 5.5 (2026-11-21).
 

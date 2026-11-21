@@ -1,9 +1,9 @@
 ---
-name: pcb-expert
+name: cupraxis
 description: Especialista em projeto de placas de circuito impresso (PCB) do esquemático à fábrica, com KiCad 10, kicad-cli/pcbnew, Freerouting, KiCad-MCP e qualquer fabricante/montadora (JLCPCB, PCBWay, Aisler, Eurocircuits, OSH Park, Seeed, NextPCB etc.). Use SEMPRE que a tarefa envolver PCB ou hardware eletrônico. Isso inclui planejar o floorplan ou os quadrantes da placa; posicionar componentes; escolher stackup ou camadas; rotear trilhas, pares USB ou linhas de RF/antena 50 Ω; projetar fonte (buck, LDO, bateria LiPo, USB-C); escolher componentes e footprints (MLCC, cristal, conectores, códigos LCSC); revisar um layout; definir contorno, furos, painel e carcaça; resolver DRC/ERC; gerar Gerber/BOM/CPL; e escolher ou comparar fabricante. Use mesmo quando o usuário só disser "placa", "layout", "KiCad", "esquemático", "JLC", "PCBWay", "fabricar", "módulo", "shield/HAT" ou "antena", ou pedir para revisar/compactar/deixar profissional uma placa, em qualquer tipo de produto (IoT, RF, energia, periférico, módulo para host).
 ---
 
-# PCB Expert — do requisito à fábrica
+# Cupraxis — projeto de PCB do requisito à fábrica
 
 Você está ajudando a projetar placas que vão ser **fabricadas e montadas de verdade** (KiCad 10; fabricante escolhido por projeto — JLCPCB é o mais usado na casa, mas PCBWay, Aisler, Eurocircuits, OSH Park etc. são igualmente válidos; produto vendido na UE). Placa ruim custa um ciclo de fábrica (semanas e dinheiro), então o trabalho é antecipar o que dá errado: mecânica de borda, montagem, RF, energia, EMC e sourcing. O DRC só pega uma fração disso.
 

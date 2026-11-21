@@ -1,6 +1,6 @@
 <div align="center">
 
-# PCB Expert
+# Cupraxis
 
 **A Claude Code skill and an open, source-tagged knowledge base for designing printed circuit boards, from requirements to the factory.**
 
@@ -19,7 +19,7 @@ KiCad 10 · kicad-cli · Freerouting · KiCad-MCP · JLCPCB · PCBWay · Aisler 
 
 ## What it does
 
-`pcb-expert` turns Claude into a hardware design reviewer and planner that thinks about what actually breaks boards in production: edge mechanics, assembly rules, RF, power integrity, EMC and sourcing. A DRC catches only part of that.
+`cupraxis` turns Claude into a hardware design reviewer and planner that thinks about what actually breaks boards in production: edge mechanics, assembly rules, RF, power integrity, EMC and sourcing. A DRC catches only part of that.
 
 - **Floorplan by zones:** power, digital, analog, RF/antenna, connectors and human interface, with a placement order and proximity rules for every component type.
 - **Power:** buck, boost and buck-boost hot loops, LDO vs LC filtering, ferrite resonance, LiPo/USB-C power paths, current-based trace and via sizing.
@@ -38,14 +38,14 @@ Every technical claim in the knowledge base carries a source URL and a **FATO** 
 **Claude Code (recommended)**
 
 ```bash
-git clone https://github.com/auvorix/pcb-expert.git
+git clone https://github.com/auvorix/cupraxis.git
 # user-wide
-cp -r pcb-expert/skill/pcb-expert ~/.claude/skills/
+cp -r cupraxis/skill/cupraxis ~/.claude/skills/
 # or project-only
-cp -r pcb-expert/skill/pcb-expert <your-project>/.claude/skills/
+cp -r cupraxis/skill/cupraxis <your-project>/.claude/skills/
 ```
 
-The skill triggers on PCB tasks such as "plan the floorplan of my board", "review this layout", "generate JLC fab files" or "which fab should I use?". You can also call it explicitly with `/pcb-expert`.
+The skill triggers on PCB tasks such as "plan the floorplan of my board", "review this layout", "generate JLC fab files" or "which fab should I use?". You can also call it explicitly with `/cupraxis`.
 
 **Requirements for the scripts (optional):**
 - KiCad 10. Run the `pcbnew` scripts with KiCad's own `python.exe` (`%LOCALAPPDATA%\Programs\KiCad\10.0\bin\python.exe` on Windows).
@@ -60,7 +60,7 @@ python jlc_query.py "mfr_part like 'TPS63020%'"               # parts lookup
 ## Repository layout
 
 ```
-skill/pcb-expert/           ← the installable skill
+skill/cupraxis/           ← the installable skill
   SKILL.md                  workflow with gates, zoning map, proximity table, key numbers
   references/               00–10 topic files + house rules + host templates (RPi HAT, Flipper)
   scripts/                  pcb_audit, ripup, spread, gnd_fix, island_fix, jlc_query, kicad_to_jlc
@@ -90,7 +90,7 @@ The baseline was competent but made factual errors that the skill avoided. Examp
 
 ## Sources and licensing
 
-- **Code** (`skill/pcb-expert/scripts`, etc.): [MIT](LICENSE).
+- **Code** (`skill/cupraxis/scripts`, etc.): [MIT](LICENSE).
 - **Documentation and research text**: [CC BY 4.0](LICENSE-docs).
 - **Third-party PDFs** (TI, ADI, ST, NXP, Espressif, u-blox, Murata, Würth, Vishay, JST, Raspberry Pi…) are **not redistributed**. [docs/pdf-catalog.md](docs/pdf-catalog.md) lists each one with its official link.
 - Flipper Zero mechanical files are GPL-3.0 at [flipperdevices/flipperzero-3d-models](https://github.com/flipperdevices/flipperzero-3d-models). Flipper One docs have no declared license, so they are linked only.
@@ -100,7 +100,7 @@ The baseline was competent but made factual errors that the skill avoided. Examp
 
 ## Português
 
-**PCB Expert** é uma skill do Claude Code e uma base de conhecimento aberta, com fontes etiquetadas (FATO / INFERÊNCIA), para projetar placas do requisito à fábrica.
+**Cupraxis** é uma skill do Claude Code e uma base de conhecimento aberta, com fontes etiquetadas (FATO / INFERÊNCIA), para projetar placas do requisito à fábrica.
 
 O que cobre:
 - floorplan por zonas;
@@ -112,6 +112,6 @@ O que cobre:
 - fabricação com qualquer fornecedor (JLCPCB, PCBWay, Aisler, Eurocircuits…);
 - a cadeia de ferramentas do KiCad 10, testada na prática.
 
-Toda a pesquisa está em português em [`research/boas-praticas/`](research/boas-praticas/). Para instalar, copie `skill/pcb-expert` para `~/.claude/skills/`.
+Toda a pesquisa está em português em [`research/boas-praticas/`](research/boas-praticas/). Para instalar, copie `skill/cupraxis` para `~/.claude/skills/`.
 
 Maintained by [AUVORIX](https://github.com/auvorix).

@@ -35,7 +35,7 @@ Atualizado em 2026-11-21. Esta pasta é **universal**: serve a qualquer PCB (pro
 | `scripts-bom/` | `jlc_query.py` e afins (SQL no banco JLC local) | `scripts/` da skill |
 
 ## Skill gerada
-A skill está instalada em `~/.claude/skills/pcb-expert/` e foi publicada em https://github.com/auvorix/pcb-expert. Para atualizar as referências da skill depois de editar esta pasta: `python -I ~/.claude/skills/pcb-expert/scripts/sync_references.py`.
+A skill está instalada em `~/.claude/skills/cupraxis/` e foi publicada em https://github.com/auvorix/cupraxis. Para atualizar as referências da skill depois de editar esta pasta: `python -I ~/.claude/skills/cupraxis/scripts/sync_references.py`.
 
 ## Próximo passo
 1. Dono decide os itens de `boas-praticas/00-conflitos-e-lacunas.md` (seções A e D).
