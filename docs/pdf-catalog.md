@@ -104,6 +104,12 @@ Não baixados (bloqueio 403/Cloudflare ou 404 para cliente automatizado; ver Bib
 | silabs-an1088-designing-with-pcb-antenna.pdf | https://www.silabs.com/documents/public/application-notes/an1088-designing-with-pcb-antenna.pdf | Silicon Labs | Documento técnico público gratuito do fabricante; baixado manualmente pelo dono em 2026-11-21; uso como referência interna, sem redistribuição |
 | silabs-an928.2-efr32-series2-layout.pdf | https://www.silabs.com/documents/public/application-notes/an928.2-efr32-series2-layout-design-guide.pdf | Silicon Labs | Documento técnico público gratuito do fabricante; baixado manualmente pelo dono em 2026-11-21; uso como referência interna, sem redistribuição |
 
+## Baixados automaticamente do site oficial (2026-11-21)
+| Arquivo | Origem | Titular | Termos |
+|---|---|---|---|
+| Ignion_UM_NN02-224_RUN_mXTEND_user_manual.pdf | https://ignion.io/files/UM_NN02-224.pdf | Ignion (ex-Fractus Antennas) | Documento técnico público gratuito do fabricante; uso como referência interna, sem redistribuição |
+| Ignion_AN_Bluetooth_WiFi_antenna_booster_NN02-224.pdf | https://ignion.io/files/AN_Bluetooth-and-Wi-Fi-antenna-booster.pdf | Ignion (ex-Fractus Antennas) | Documento técnico público gratuito do fabricante; uso como referência interna, sem redistribuição |
+
 
 ## 04-emc
 

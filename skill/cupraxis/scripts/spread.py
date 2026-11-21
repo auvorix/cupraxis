@@ -8,7 +8,7 @@ import sys, io, re, math, argparse
 ap = argparse.ArgumentParser()
 ap.add_argument("board"); ap.add_argument("--bounds", nargs=4, type=float, required=True)
 ap.add_argument("--fixed", default=""); ap.add_argument("--fixed-prefix", default="J,H,X,SW")
-ap.add_argument("--fixed-band", default=""); ap.add_argument("--gap", type=float, default=0.6)
+ap.add_argument("--fixed-band", default=""); ap.add_argument("--gap", type=float, default=1.0)  # folga extra entre raios; coerente com a tabela de montagem da fabrica (JLC: QFN >= 1,0 mm)
 ap.add_argument("--anchor", type=float, default=0.010); ap.add_argument("--dry", action="store_true")
 A = ap.parse_args()
 board = A.board

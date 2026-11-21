@@ -249,6 +249,21 @@ Sensibilidade (INFERÊNCIA): com W = 0,69 mm, gap 0,15 dá **43,4 Ω** e gap 0,2
 
 ---
 
+
+### Valores oficiais da calculadora de impedância JLCPCB (consulta em 2026-11-21, FATO)
+Fonte: https://jlcpcb.com/pcb-impedance-calculator. Configuração: 4 camadas, 1,6 mm, cobre externo 1 oz, interno 0,5 oz, sinal em L1 com referência em L2, valores com máscara de solda. Substituem as estimativas anteriores.
+
+| Stackup (prepreg L1–L2) | CPWG 50 Ω (gap ao cobre 0,20 mm) | Microstrip 50 Ω | Par diferencial 90 Ω (microstrip, espaçamento 0,2032 mm) |
+|---|---|---|---|
+| **JLC04161H-7628** padrão (7628 RC49%, 0,2104 mm) | **W = 0,306 mm** | W = 0,359 mm | **W = 0,291 mm**, S = 0,203 mm |
+| **JLC04161H-3313** (3313 RC57%, 0,0994 mm; núcleo de 1,265 mm) | **W = 0,142 mm** | W = 0,151 mm | **W = 0,154 mm**, S = 0,203 mm |
+| JLC04161H-3313A (2 × 3313, ≈ 0,206 mm) | W = 0,349 mm com gap de 0,508 mm (valor padrão da página) | — | — |
+
+- A calculadora lista ainda as variantes 7628A–G, 2116A–E e 1080A–C, com espessuras finais de 1,45 a 1,69 mm.
+- A tolerância de impedância é ±10 %.
+- Ao mudar o gap da CPWG, o espaçamento do par ou o stackup, **recalcule na página**.
+- No 3313, a trilha de 0,14–0,15 mm fica perto do mínimo de fabricação e é estreita para pads 0402 e para o SMA. O 7628 (≈ 0,31 mm) casa melhor com esses pads.
+
 ## Erros comuns
 
 | Erro | Consequência | Correção |

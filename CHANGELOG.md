@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.0 — 2026-11-21
+- **Official JLCPCB impedance values** from the vendor calculator replace the estimates. Setup: 4 layers, 1.6 mm, 1 oz outer / 0.5 oz inner, signal on L1 over L2.
+  - JLC04161H-7628: CPWG 50 Ω W 0.306 mm with a 0.20 mm gap; microstrip 50 Ω 0.359 mm; 90 Ω differential pair W 0.291 / S 0.203 mm.
+  - JLC04161H-3313: CPWG 0.142 mm; microstrip 0.151 mm; 90 Ω pair W 0.154 / S 0.203 mm.
+- **House-rule conflicts A1–A16 resolved** (`references/regras-da-casa.md` §17):
+  - stackup default 7628 SIG/GND/GND/SIG; CPWG for RF;
+  - rails/panel for edge connectors;
+  - minimum test pads;
+  - hand-route critical nets before the autorouter;
+  - multiple vias per GND island;
+  - assembly spacing table in the placement gate.
+- **Skill description:** narrower scope, so it no longer fires on firmware-only, basic-electronics, SPICE-only or enclosure-only tasks; quoted YAML, 936 characters.
+- **`spread.py`:** default gap 1.0 mm, matching the assembler spacing table.
+- **References:** Ignion 2.4 GHz antenna manual and app note added to the PDF catalog.
+- **Known issue:** the skill-creator trigger-optimization loop (`claude -p`) recorded 0 triggers for every query on this Windows setup, positives included. The run was discarded as a harness problem and the description was tuned by hand.
+
+
 ## 1.1.0 — 2026-11-21
 - **Review checklists (`references/13`)**, adapted with attribution from kicad-happy (MIT) and KiCAD-MCP-Server (MIT):
   - schematic review by part class, stacked tolerances, standard connector pinouts and GPIO mux audit;

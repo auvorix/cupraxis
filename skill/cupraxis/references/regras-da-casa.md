@@ -301,3 +301,29 @@ Armadilhas: a ordem dos campos na descrição varia (ex.: `50V 8.2pF` e não `8.
 - **Estoque baixo** (ex.: MAX-M10S com 68) → sinalizar para lote maior.
 - Entregar a proposta em tabela (`docs/bom-lcsc-proposta-<versão>.md`) e **só gravar no esquemático depois da aprovação**; aí regenerar BOM/CPL e conferir rotações no visualizador da JLC.
 - **Fazer isso cedo**, junto com a escolha de footprints — não depois de rotear.
+
+---
+
+## 17. Resolução dos conflitos com a literatura (2026-11-21, ordem do dono: "corrija as pendências")
+
+> Fecha os itens A1–A16 de `boas-praticas/00-conflitos-e-lacunas.md`. **Onde este parágrafo diverge das seções anteriores, ele prevalece.** As fontes estão nos temas indicados entre colchetes.
+
+| # | Regra adotada |
+|---|---|
+| A1 | **Conectores de acesso continuam rentes à borda** (§5). Para montagem na JLC, que exige corpo a ≥ 2,5 mm da borda: placa com **rails/painel**, porque a borda que a máquina vê é a do rail. **Antes de cada pedido**, confirmar com a JLC como ela trata conector que ultrapassa a borda; se não aceitar, esses conectores vão para solda manual. [01, 06] |
+| A2 | Placa com algum lado < 70 mm: **painel ou rails no PCBA Standard**, ou PCBA Economic com todas as peças num lado só (≥ 0402). [01, 10] |
+| A3 | **~18 mm entre SMA vale só entre bandas diferentes.** Antenas da mesma banda ficam no máximo de afastamento possível ao longo da borda, e a coexistência se resolve também no firmware (tempo, canal, potência). [03] |
+| A4 | Linha de RF: **CPWG sobre GND sólido em L2** (o §3, que diz "microstrip", fica corrigido). Larguras da calculadora oficial JLC no §17-A11. [03] |
+| A5 | Ferrite + LC por rádio, **com**: ferrite a ≤ 20 % da corrente nominal, amortecimento (ex.: 1 µF + 2 Ω), frequência de ressonância longe de f_sw, f_sw/f_corte ≥ 5 e jumper para PWM forçado. GNSS: ≤ 0,2 Ω em série no VCC. Opção registrada: buck-boost ajustado um pouco acima de 3,3 V + LDO só no GNSS/sub-GHz, respeitando o limite de 3,6 V do ESP32. [02, 13] |
+| A5b | Energia: **mínimo de 0,76 mm** no tronco do +3V3 (Espressif) e largura pela IPC-2152 (Saturn), lembrando que o cobre interno JLC é 0,5 oz. Conferir as larguras **depois** de rotear (`pcb_audit.py`). [02] |
+| A6 | Antes do Freerouting, **rotear à mão e travar**: RF 50 Ω, USB 90 Ω, cristal, hot loop do SMPS e troncos de energia. [04] |
+| A7 | Ilhas de GND: **várias vias por ilha**, ou remover a ilha. Uma via só é o mínimo, não a meta. [04] |
+| A8 | Gate de placement: além de courtyard = 0, a **tabela de espaçamento de montagem da fábrica** (JLC: QFN ≥ 1,0 mm de qualquer peça, QFP–QFP 1,25 mm, BGA 2,0 mm). `spread.py` com GAP coerente com essa tabela. [01] |
+| A9 | Sem header de flash solto (§6 continua), mas **com test pads mínimos**: um ponto sondável por rail e por sinal crítico. Para SWD, Tag-Connect TC2030-NL. [01, 05] |
+| A10 | Auto-boot: MCU com USB nativo (ESP32-C3/C5/S3) **dispensa os 2 MOSFETs**; o circuito só entra atrás de ponte USB-UART ou com flash pela UART de um host. O botão BOOT continua. [05] |
+| A11 | **Stackup padrão de 4 camadas: JLC04161H-7628, SIG / GND / GND / SIG**, com energia por pour e trilhas largas em L1/L4. O 7628 dá trilha de 50 Ω de ≈ 0,31 mm, melhor para pads 0402 e SMA. Usar **3313** (L1 a 0,099 mm de L2, melhor EMC) quando EMC for o fator limitante e a geometria aceitar trilhas de ≈ 0,14–0,15 mm. Valores da calculadora oficial (2026-11-21):<br>• **7628:** CPWG 50 Ω W 0,306 mm com gap 0,20 mm; microstrip 0,359 mm; par 90 Ω W 0,291 / S 0,203 mm.<br>• **3313:** CPWG 50 Ω W 0,142 mm; microstrip 0,151 mm; par 90 Ω W 0,154 / S 0,203 mm. [03, 04] |
+| A12 | Cristal "**perto, conforme o datasheet do chip**" (ex.: ESP32-C5 chip-down pede ≥ 2,4 mm do pino), com GND sólido embaixo e nenhuma trilha sob ele. [01] |
+| A13 | Desempate de posicionamento: **buck/buck-boost no quadrante da entrada** (§14); **LDOs e filtros locais junto da carga** (§2). [02] |
+| A14 | DSN do KiCad 10: leva zonas, keepouts e netclasses; **não** leva `.kicad_dru` nem gap de par diferencial. Depois de importar o SES, **sempre DRC e conferência de larguras** (o erro 20 fica com essa justificativa). [08] |
+| A15 | **Via de retorno:** alvo ≤ 1 mm para sinal rápido (t_r ≤ 1,5 ns); limite de 5 mm para qualquer sinal. Par diferencial: 1–2 vias simétricas. Troca GND↔PWR: re-rotear ou capacitor de costura. [12] |
+| A16 | **Pinos de GND em conector/cabo:** erro abaixo de 1:9; aviso abaixo de max(2, ⌈S/4⌉); clock e sinais rápidos com GND adjacente (G-S-G), par diferencial em GSSG; cabo flat rápido ou > 30 cm alterna 1:1. [12] |

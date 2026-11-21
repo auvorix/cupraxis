@@ -2,7 +2,7 @@
 
 > Síntese das seções "Conflitos com PADROES-PROJETO-PCB.md" e "Lacunas" dos temas 01–06. **O `PADROES-PROJETO-PCB.md` NÃO foi alterado** — cada item abaixo é uma decisão do dono. Detalhe, números e fontes no tema indicado entre colchetes.
 
-## A. Divergências que pedem decisão (prioridade alta)
+## A. Divergências (RESOLVIDAS em 2026-11-21 — regras adotadas em `PADROES-PROJETO-PCB.md` §17)
 
 | # | Regra da casa | O que a literatura diz | Sugestão | Tema |
 |---|---|---|---|---|
@@ -35,7 +35,16 @@ Placement antes de rotear (§12); 4 camadas para RF/energia (§1, com a ressalva
 - **Sourcing:** só peças Active com second source; MSL/bake (MSL3 = 168 h); "Preferred Extended" isentas de taxa na JLC Economic.
 
 ## D. Pendências que dependem do dono
-1. **PDFs bloqueados para download automático.** Em 2026-11-21 o dono baixou 16 manualmente (já movidos para as pastas e registrados nos `LICENSES.md`): ADI AN-136, AN-139, AN-1368, MT-031, MT-101, Ferrite Beads Demystified; Würth ANP045b, ANP044d; ST AN1709, AN2867; NXP AN10897, AN2731; Silicon Labs AN0016.1, AN1088, AN928.2; Molex PicoBlade. **Ainda faltam** (link direto não confirmado): Würth ANP041, ANP025, ANR017 e nota de modo comum/diferencial; Microchip AN26.2; Nordic nWP-017, nWP-008; guias Ignion; KEMET flex crack/tântalo. Obs.: os temas ainda citam esses documentos com a etiqueta da época (SEC/FATO-sec); dá para promover a FATO numa revisão lendo os PDFs.
+1. **PDFs bloqueados para download automático.** Em 2026-11-21 o dono baixou 16 manualmente (já movidos para as pastas e registrados nos `LICENSES.md`): ADI AN-136, AN-139, AN-1368, MT-031, MT-101, Ferrite Beads Demystified; Würth ANP045b, ANP044d; ST AN1709, AN2867; NXP AN10897, AN2731; Silicon Labs AN0016.1, AN1088, AN928.2; Molex PicoBlade. Em 2026-11-21 o download automático trouxe do site oficial os guias Ignion (manual do RUN mXTEND NN02-224 e a nota "Bluetooth and Wi-Fi antenna booster"), já em `pdfs/03-rf/` e no `LICENSES.md`. **Ainda faltam** (o servidor oficial bloqueia download automático; baixar à mão):
+   - Würth ANP041 *Peak Current Proof Input Filter with WE-MPSB* (403) → `pdfs/02-energia/`: https://www.we-online.com/catalog/media/o109041v410%20AppNotes_ANP041_PeakCurrentProofInputFilterWithWE-MPSB_EN.pdf
+   - Würth ANP025 *Selecting and Using Ferrite Beads for Ringing Control in Switching Converters* (403) → `pdfs/02-energia/`: https://www.we-online.com/components/media/o109039v410%20ANP025a%20EN.pdf
+   - Würth ANR017 *GNSS Antenna Selection* (nota de antena GNSS; 403) → `pdfs/03-rf/`: https://www.we-online.com/components/media/o171079v410%20ANR017_GNSS_Antenna.pdf
+   - Würth, modo comum × diferencial (403; não há nota dedicada só a isso; as mais próximas são ANS018 e ANP146) → `pdfs/04-emc/`: https://www.we-online.com/components/media/o866302v410%20ANS018a_EMI%20Filter%20Design%20for%20Non-Isolated%20DC%20DC%20Converter_EN.pdf e https://www.we-online.com/components/media/o868432v410%20ANP146a_WE-CMDC_EN.pdf
+   - Microchip AN26.2 *Implementation Guidelines for Microchip's USB 2.0 and USB 3.1 Gen 1 and Gen 2 Hub and Hub Combo Devices* (DS00001876, rev. D; o microchip.com dá 403) → `pdfs/05-componentes/`: https://www.microchip.com/en-us/application-notes/an262
+   - Nordic nWP-017 *Antenna tuning* e nWP-008 *λ/4 printed monopole 2.45 GHz* (Cloudflare 403) → `pdfs/03-rf/`: https://docs.nordicsemi.com/bundle/nwp_017/resource/nwp_017.pdf e https://docs.nordicsemi.com/bundle/nwp_008/resource/nwp_008.pdf
+   - KEMET flex crack (MLCC) e tântalo (derating/falha) → `pdfs/05-componentes/`: o PDF não está mais no site oficial. O kemet.com redireciona para https://yageogroup.com/en/us/technical-resources.html e o link antigo do CARTS 2004 dá 404. As cópias que existem estão só em distribuidores ou terceiros (Mouser, SMTnet, EPCI), que não usamos. Procurar na área de recursos técnicos da YAGEO.
+
+   Obs.: os temas ainda citam esses documentos com a etiqueta da época (SEC/FATO-sec); dá para promover a FATO numa revisão lendo os PDFs.
 2. **Rodar a calculadora de impedância da JLC** para 7628 e 3313 (50 Ω CPWG, 90 Ω diferencial) — as larguras nos temas 03/04 são estimativas.
 3. **Perguntar à JLC**: conector que ultrapassa a borda + regra de 2,5 mm em placa com rail.
 4. **Preço 2 × 4 camadas**: JLC reajustou em 03/08/2026 sem publicar valores — conferir na cotação.
